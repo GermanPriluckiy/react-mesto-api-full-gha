@@ -13,7 +13,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import InfoTooltip from "./InfoTooltip";
 import { api } from "../utils/Api";
-import { validateToken } from "../utils/Auth";
+import { validateToken, exitAccount } from "../utils/Auth";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
@@ -30,7 +30,8 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
-  const [isSuccessTooltipStatus, setIsSuccessTooltipStatus] = React.useState(true);
+  const [isSuccessTooltipStatus, setIsSuccessTooltipStatus] =
+    React.useState(true);
 
   const navigate = useNavigate();
 
@@ -41,37 +42,35 @@ function App() {
           setLoggedIn(true);
           setUserEmail(user.email);
 
-          navigate('/', { replace: true });
+          navigate("/", { replace: true });
         })
         .catch((err) => console.log(err));
     }
 
     if (loggedIn) {
-      Promise.all([
-        api.getUserInfoFromServer(),
-        api.getInitialCards()
-      ])
+      Promise.all([api.getUserInfoFromServer(), api.getInitialCards()])
         .then(([userInfo, initialCards]) => {
           setCurrentUser(userInfo);
           setCards(initialCards.data);
-          
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     } else {
-      checkToken()
+      checkToken();
     }
   }, [loggedIn, navigate]);
 
   //Функция лайка/дизлайка карточки
   function handleCardLike(likes, id) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = likes.some(i => i === currentUser._id);
+    const isLiked = likes.some((i) => i === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .changeLikeCardStatus(id, isLiked)
       .then((newCard) => {
-        setCards((state) => state.map((c) => (c._id === id ? newCard.data : c)));
+        setCards((state) =>
+          state.map((c) => (c._id === id ? newCard.data : c))
+        );
         console.log(newCard);
       })
       .catch((err) => {
@@ -112,7 +111,10 @@ function App() {
 
   //Выход из профиля
   function handleLogout() {
-    setLoggedIn(false);
+    exitAccount()
+    .then(() => setLoggedIn(false))
+    .catch(err => console.log(err));
+    
   }
   //Изменение информации о пользователе
   function handleUpdateUser(name, description) {
@@ -132,7 +134,7 @@ function App() {
       .updateAvatar(link)
       .then((newInfo) => {
         setCurrentUser(newInfo.user);
-        closeAllPopups();  
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err);

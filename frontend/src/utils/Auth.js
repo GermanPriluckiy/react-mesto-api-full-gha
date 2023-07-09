@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://api.mesto-pgk.nomoredomains.work";
 
 function getResponseData(res) {
   if (!res.ok) {
@@ -27,6 +27,17 @@ export const authorize = (email, password) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
+  }).then((res) => getResponseData(res));
+};
+
+export const exitAccount = () => {
+  return fetch(`${BASE_URL}/signout`, {
+    method: "GET",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    
   }).then((res) => getResponseData(res));
 };
 
