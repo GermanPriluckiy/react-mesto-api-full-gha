@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
@@ -12,6 +13,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import InfoTooltip from "./InfoTooltip";
 import { api } from "../utils/Api";
+import { validateToken } from "../utils/Auth";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
@@ -30,34 +32,35 @@ function App() {
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [isSuccessTooltipStatus, setIsSuccessTooltipStatus] = React.useState(true);
 
-  //Получение начальных карточек
-  React.useEffect(() => {
-    if (loggedIn) {
-      api
-        .getInitialCards()
-        .then((res) => {
-          setCards(res);
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [loggedIn]);
+  const navigate = useNavigate();
 
-  //Получение информации о пользователе
   React.useEffect(() => {
-    if (loggedIn) {
-      api
-        .getUserInfoFromServer()
-        .then((res) => {
-          setCurrentUser(res);
+    function checkToken() {
+      validateToken()
+        .then((user) => {
+          setLoggedIn(true);
+          setUserEmail(user.email);
+
+          navigate('/', { replace: true });
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => console.log(err));
     }
-  }, [loggedIn]);
+
+    if (loggedIn) {
+      Promise.all([
+        api.getUserInfoFromServer(),
+        api.getInitialCards()
+      ])
+        .then(([userInfo, initialCards]) => {
+          setCurrentUser(userInfo);
+          setCards(initialCards.data);
+          
+        })
+        .catch(err => console.log(err));
+    } else {
+      checkToken()
+    }
+  }, [loggedIn, navigate]);
 
   //Функция лайка/дизлайка карточки
   function handleCardLike(likes, id) {
@@ -68,7 +71,7 @@ function App() {
     api
       .changeLikeCardStatus(id, isLiked)
       .then((newCard) => {
-        setCards((state) => state.map((c) => (c._id === id ? newCard : c)));
+        setCards((state) => state.map((c) => (c._id === id ? newCard.data : c)));
         console.log(newCard);
       })
       .catch((err) => {
@@ -128,9 +131,8 @@ function App() {
     api
       .updateAvatar(link)
       .then((newInfo) => {
-        console.log(newInfo);
         setCurrentUser(newInfo.user);
-        closeAllPopups();
+        closeAllPopups();  
       })
       .catch((err) => {
         console.log(err);
@@ -142,7 +144,7 @@ function App() {
     api
       .addNewCard(name, link)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        setCards([newCard.data, ...cards]);
         closeAllPopups();
       })
       .catch((err) => {

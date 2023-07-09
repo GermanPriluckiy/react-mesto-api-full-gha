@@ -5,7 +5,7 @@ const Card = require('../models/card');
 
 const getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.send(cards))
+    .then((cards) => res.send({ data: cards }))
     .catch(next);
 };
 
@@ -15,7 +15,7 @@ const createCard = (req, res, next) => {
     name: req.body.name,
     link: req.body.link,
   })
-    .then((card) => res.status(201).send(card))
+    .then((card) => res.status(201).send({ data: card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new IncorrectDataError('некорректные данные при создании карточки'));

@@ -9,11 +9,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
 const errorHandler = require('./middlewares/error');
 const NotFoundError = require('./errors/NotFoundError');
-const cors = require('cors');
 
 const app = express();
 

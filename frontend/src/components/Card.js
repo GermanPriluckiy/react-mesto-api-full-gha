@@ -14,31 +14,25 @@ function Card({
   const currentUser = React.useContext(CurrentUserContext);
   const isOwn = owner === currentUser._id;
 
-  // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-  // const isLiked = likes.some((i) => i === currentUser._id);
-  const isLiked = likes.some(like => like === currentUser._id);
-
-  // Создаём переменную, которую после зададим в `className` для кнопки лайка
-  const cardLikeButtonClassName = `like-btn ${
-    isLiked && "like-btn_status_active"
-  }`;
 
   function handleCardClick() {
     onClick({ name, link });
-    console.log(likes, id, currentUser._id);
-    console.log({
-      "link": link,
-      "name": name,
-      "likes": likes,
-      "owner": owner,
-      "id": id,
-    });
+    console.log(id);
     
   }
 
   function handleLikeClick() {
     onCardLike(likes, id);
   }
+
+  // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
+  const isLiked = likes.some((i) => i === currentUser._id);
+  //const isLiked = likes.some(like => like === currentUser._id);
+
+  // Создаём переменную, которую после зададим в `className` для кнопки лайка
+  const cardLikeButtonClassName = `like-btn ${
+    isLiked && "like-btn_status_active"
+  }`;
 
   function handleDeleteClick() {
     onCardDelete(id);
