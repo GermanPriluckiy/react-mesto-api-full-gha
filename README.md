@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 51.250.77.78
+IP 51.250.77.78
 
 Frontend https://mesto-pgk.nomoredomains.work
 
