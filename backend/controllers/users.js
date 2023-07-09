@@ -133,6 +133,11 @@ const updateAvatar = (req, res, next) => {
       }
     });
 };
+
+const logout = (req, res) => {
+  res.clearCookie('jwt');
+};
+
 module.exports = {
   getUsers,
   createUser,
@@ -141,4 +146,5 @@ module.exports = {
   updateAvatar,
   login,
   getCurrentUser,
+  logout,
 };

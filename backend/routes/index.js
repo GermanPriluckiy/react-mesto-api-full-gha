@@ -3,7 +3,7 @@ const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const userRoutes = require('./users');
 const cardsRoutes = require('./cards');
-const { createUser, login } = require('../controllers/users');
+const { createUser, login, logout } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 
 router.post(
@@ -31,6 +31,8 @@ router.post(
   }),
   login,
 );
+
+router.get('/signout', logout);
 
 router.use(auth);
 
