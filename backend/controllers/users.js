@@ -74,9 +74,10 @@ const login = (req, res, next) => {
                 _id: user._id,
               },
               'SECRET',
+              { expiresIn: '7d' },
             );
             res.cookie('jwt', jwt, {
-              maxAge: 360000,
+              maxAge: 604800000,
               httpOnly: true,
               sameSite: true,
             });
@@ -121,7 +122,7 @@ const updateAvatar = (req, res, next) => {
     },
     { new: true },
   )
-    .then((user) => res.send({ avatar: user.avatar }))
+    .then((user) => res.send({ user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(

@@ -1,0 +1,13 @@
+.login__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 358px;
+}
+
+@media screen and (max-width: 520px) {
+    .login__container {
+      width: 282px;
+    }
+  
+  }

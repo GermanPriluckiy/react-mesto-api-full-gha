@@ -1,0 +1,20 @@
+.places__card-footer {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  margin: 22px 20px 22px;
+}
+
+@media screen and (max-width: 1180px) {
+  .places__card-footer {
+    margin: 25px 5px 31px;
+  }
+
+}
+
+@media screen and (max-width: 420px) {
+  .places__card-footer {
+    margin: 25px 21px 31px;
+  }
+
+}

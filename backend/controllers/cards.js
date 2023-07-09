@@ -47,7 +47,7 @@ const likeCard = (req, res, next) => Card.findByIdAndUpdate(
   { new: true },
 )
   .orFail(() => new NotFoundError('Карточка с данным id не найдена'))
-  .then((card) => res.send({ data: card.likes }))
+  .then((card) => res.send({ data: card }))
   .catch(next);
 
 const dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
@@ -56,7 +56,7 @@ const dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
   { new: true },
 )
   .orFail(() => new NotFoundError('Карточка с данным id не найдена'))
-  .then((card) => res.send({ data: card.likes }))
+  .then((card) => res.send({ data: card }))
   .catch(next);
 
 module.exports = {

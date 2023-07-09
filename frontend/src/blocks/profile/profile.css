@@ -1,0 +1,33 @@
+.profile {
+  max-width: calc(100% - 400px);
+  margin: 0 auto 51px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+@media screen and (max-width: 1080px) {
+  .profile {
+    max-width: calc(100% - 200px);
+  }
+}
+
+@media screen and (max-width: 880px) {
+  .profile {
+    max-width: calc(100% - 50px);
+  }
+}
+
+@media screen and (max-width: 766px) {
+  .profile {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .profile {
+    max-width: calc(100% - 38px);
+    margin: 0 auto 36px;
+  }
+}

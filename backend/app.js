@@ -1,3 +1,10 @@
+const allowedCors = [
+  'https://mesto-pgk.nomoredomains.work',
+  'http://mesto-pgk.nomoredomains.work',
+  'http://localhost:3001',
+  'http://localhost:3000',
+];
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -6,8 +13,16 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
 const errorHandler = require('./middlewares/error');
 const NotFoundError = require('./errors/NotFoundError');
+const cors = require('cors');
 
 const app = express();
+
+const corsOptions = {
+  credentials: true,
+  origin: allowedCors,
+};
+
+app.use(cors(corsOptions));
 
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
   useNewUrlParser: true,
