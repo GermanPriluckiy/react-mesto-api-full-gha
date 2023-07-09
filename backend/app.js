@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const allowedCors = [
   'https://mesto-pgk.nomoredomains.work',
   'http://mesto-pgk.nomoredomains.work',
@@ -31,7 +33,11 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
 app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
-
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 app.use(router);
 
 app.use((req, res, next) => {
