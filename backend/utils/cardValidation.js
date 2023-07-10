@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 const { celebrate, Joi } = require('celebrate');
 
-export const cardJoiValidation = celebrate({
+const cardJoiValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     link: Joi.string()
@@ -12,8 +12,13 @@ export const cardJoiValidation = celebrate({
   }),
 });
 
-export const cardIdJoiValidation = celebrate({
+const cardIdJoiValidation = celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().length(24).hex().required(),
   }),
 });
+
+module.exports = {
+  cardJoiValidation,
+  cardIdJoiValidation,
+};
